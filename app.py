@@ -10,7 +10,6 @@ AI created Resume based on high ATS score""")
 
 #==============Agent Code ===========
 # Step 2: Load Modules
-import IPython as ip
 import os
 import time
 import langchain
