@@ -95,21 +95,21 @@ uploaded_file = st.sidebar.file_uploader(
     "Choose an image file",
     type = ['jpeg','jpeg','png''webp']
     )
-    if uploaded_file is not None:
-        try:
-             image = Image.open(uploaded_file)
+if uploaded_file is not None:
+    try:
+        image = Image.open(uploaded_file)
 
-             st.sidebar.image(image,caption ="uploaded image",use_container_width=True)
+        st.sidebar.image(image,caption ="uploaded image",use_container_width=True)
 
-             if image.mode in ("RGBA",'P')
-               image = image.convert.('RGB')
-            base_name = os.path.splitext(uploaded_file.name)[0]
-            save_path =f"{base_name}.jpg"
+        if image.mode in ("RGBA",'P'):
+            image = image.convert.('RGB')
+        base_name = os.path.splitext(uploaded_file.name)[0]
+        save_path =f"{base_name}.jpg"
 
-            image.save(save_path,"JPEG")
-            st.sidebar.success(f" iamge successfully saved as '{save-path}'!)
+        image.save(save_path,"JPEG")
+        st.sidebar.success(f" iamge successfully saved as '{save-path}'!")
 
-        except Exception as e:
+    except Exception as e:
         st.errror(f"Error processing image:{e}")
         
 
