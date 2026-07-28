@@ -22,6 +22,7 @@ from langchain.messages import SystemMessage, HumanMessage
 import numpy as np
 import streamlit as st
 from langchain_community.document_loaders import PyMuPDFLoader
+FROM PIL import image
 
 
 
@@ -30,7 +31,12 @@ GOOGLE_API_KEY = st.sidebar.text_input("GOOGLE_API_KEY",type ="password")
 GROQ_API_KEY = st.sidebar.text_input("GROQ_API_KEY",type ="password")
 TAVILY_API_KEY = st.sidebar.text_input("TAVILY_API_KEY",type ="password")
 
-
+if not(GOOGLE_API_KEY) and not (GROQ_API_KEY) and not(TAVILY_API_KEY):
+    st.sidebar.warning("PASS API KEYS")
+    st.stop()
+else:
+    st.success("API KEYS LOADED")
+    
 #================MODEL BUILDING ===========
 model = ChatGoogleGenerativeAI(
     model = 'gemini-3.5-flash-lite',
@@ -84,6 +90,37 @@ def resume_maker_prompt():
   return prompt
 
 resume_maker_prompt()
+#=============== UPLOAD IMAGE ===========
+uploaded file = st.sidebar.file_uploader(
+    "Choose an image file"
+    type = ['jpeg','jpeg','png''webp']
+    )
+    if uploaded_file is not None:
+        try:
+             image = Image.open(uploaded_file)
+
+             st.sidebar.image(image,caption ="uploaded image",use_container_width=True)
+
+             if image.mode in ("RGBA",'P')
+               image = image.convert.('RGB')
+            base_name = os.path.splitext(uploaded_file.name)[0]
+            save_path =f"{base_name}.jpg"
+
+            image.save(save_path,"JPEG")
+            st.sidebar.success(f" iamge successfully saved as '{save-path}'!)
+
+        except Exception as e:
+        st.errror(f"Error processing image:{e}")
+        
+
+
+
+
+
+
+
+
+
 #============== Generate Resume=========
 prompt = '''you are a helpful AI assistant
 with job resume maker, your task is to give
@@ -92,9 +129,12 @@ user will upload data and return html format resume
 ALways use different color and styling '''
 
 final_prompt = prompt + resume_maker_prompt()
-
-user_details = '''user details: given below give Python developer Resume
-my name is Soumil sharma i have just completed my bca 1 years in which i have learnt c , c++ and python , adn html , web programming DBMS '''
+user_info = st.text_input("Enter your  information")
+user_details = f"""user details : giver below:-
+Resume info : {user_info}
+photo : {uploaded_photo}
+photo present in the current directory with name as uploaded 
+default if not given generate python developer resume"""
 
 query = final_prompt + user_details
 
