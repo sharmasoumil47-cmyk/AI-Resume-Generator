@@ -18,6 +18,7 @@ import streamlit as st
 from langchain_community.document_loaders import PyMuPDFLoader
 from PIL import Image
 import base64
+st.set_page_config(layout="wide")
 
 #steream lit is web based pyhton frame work
 st.title ("AI RESUME MAKER & JOB APPLY AGENT")
