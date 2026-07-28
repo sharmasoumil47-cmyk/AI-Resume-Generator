@@ -17,6 +17,8 @@ import numpy as np
 import streamlit as st
 from langchain_community.document_loaders import PyMuPDFLoader
 from PIL import Image
+import base64
+
 #steream lit is web based pyhton frame work
 st.title ("AI RESUME MAKER & JOB APPLY AGENT")
 st.image("https://www.freecvmaker.in/images/resume_s.webp" width=300)
@@ -107,7 +109,11 @@ if FILE is not None:
 
 #===============RESUME GENERATOR =============
 #===============RESUME GENERATOR =============
-prompt="""you are a helpful ai assistant  with a job resume maker , your task is to give html gormat resume ,with a proper designing using recent html js css code , with professional degsine format , user will upload data and return html format resume make it diffrent colour scheme andthe resume should project m skill set  also make it look like professional , create side margins table also make the text gradient for heddings like professional summary
+prompt="""you are a helpful ai assistant  with a job resume maker ,
+your task is to give html gormat resume ,with a proper designing using recent html js css code ,
+with professional degsine format , user will upload data and return html format resume make it diffrent 
+colour scheme andthe resume should project m skill set  also make it look like professional ,
+create side margins table also make the text gradient for heddings like professional summary
 IMPORTANT: wherever the profile photo goes in the resume, output exactly this tag and nothing else:
 <img src="PROFILE_IMAGE_PLACEHOLDER" style="width:100px;height:100px;border-radius:50%;">
 do not draw or generate any other image tag or placeholder circle yourself """
@@ -121,21 +127,33 @@ FILE =st.sidebar.file_uploader(
 )
 
 USER_INFO=st.text_area("ENTER YOUR INFORMATION")
-user_details=f"""user details:given beow :resume info {USER_INFO} DEFAULT IF NOT GIVEN : PYTHON DEVELOPER RESUME """
-query = final_prompt+user_details
 
-import base64
-OPTIONS = ["DELHI","NOIDA","gurugram","kanpur","lucknow","banglore","pune"]
-LOCATION = st.sidebar.multiselect('SELECT LOCATION:',options = OPTIONS)
-JOB_PROFILE = ["Python developer","GEN AI","FULL STACK DEVELOPER","DATA ANALYST"]
-PROFILE = st.sidebar.multiselect("Select job role",options = JOB_PROFILE)
+user_query=f"""user details:given beow :
+resume info {USER_INFO}
+DEFAULT IF NOT GIVEN : PYTHON DEVELOPER RESUME """
 
-job_prompt = f"""Based on {PROFILE} jobs in {LOCATION}, I
-want latest job news in using tavily,
+query = final_prompt+user_query
+
+
+OPTIONS = ["DELHI","NOIDA","GURGAON/GURUGRAM",
+          'KANPUR','LUCKNOW','BANGLORE','PUNE']
+           
+LOCATION = st.sidebar.multiselect('SELECT LOCATION: ',
+                                    options = OPTIONS )
+
+JOB_PROFILE = ["PYTHON DEVELOPER",'GEN AI',
+                'FULL-STACK DEVELOPER','DATA ANALYST']
+
+PROFILE = st.sidebar.multiselect("SELECT JOB ROLE",
+                options = JOB_PROFILE)
+
+
+job_prompt = f"""Based on {PROFILE} jobs in {LOCATION}, I 
+want latest job news in using tavily, 
 try top 10 search or whatever available
 and give result like naukri theme design with
 job name, job desc, salary,
-apply link output must be in html """
+apply link and OUTPUT must be In HTML no markdowns"""
 
 
 
@@ -147,17 +165,22 @@ if st.button('generate resume'):
     print(response['messages'][-1].content)
     code=response['messages'][-1].content[-1]['text']
 
-    # swap in the actual uploaded photo instead of the placeholder tag
+
+
     if FILE is not None:
         with open(save_path, "rb") as img_file:
             b64_image = base64.b64encode(img_file.read()).decode()
         data_uri = f"data:image/jpeg;base64,{b64_image}"
         code = code.replace("PROFILE_IMAGE_PLACEHOLDER", data_uri)
+
+
+
       
     st.html(code , width="stretch" , unsafe_allow_javascript=True)
+
+========================= APPLY LIVE JOBS======================
 st.divider()
 
 response = agent.invoke({'messages':[{'role': 'user', 'content': job_prompt}]})
 job_code = response['messages'][-1].content[-1]['text']
 st.html(job_code, width="stretch", unsafe_allow_javascript=True)
-
