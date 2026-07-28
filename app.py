@@ -22,7 +22,7 @@ from langchain.messages import SystemMessage, HumanMessage
 import numpy as np
 import streamlit as st
 from langchain_community.document_loaders import PyMuPDFLoader
-FROM PIL import image
+from PIL import image
 
 
 
