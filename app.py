@@ -16,6 +16,9 @@ from langchain.messages import SystemMessage , HumanMessage
 import numpy as np
 import streamlit as st
 from langchain_community.document_loaders import PyMuPDFLoader
+#steream lit is web based pyhton frame work
+st.title ("AI RESUME MAKER & JOB APPLY AGENT")
+st.image("https://www.instagram.com/reel/CzD-QKXxqCs/" width=300)
 # api keys
 GOOGLE= st.sidebar.text_input("GEMINI",type="password")
 GROQ= st.sidebar.text_input("GROQ",type="password")
