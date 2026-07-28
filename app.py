@@ -16,6 +16,7 @@ from langchain.messages import SystemMessage , HumanMessage
 import numpy as np
 import streamlit as st
 from langchain_community.document_loaders import PyMuPDFLoader
+from PIL import Image
 #steream lit is web based pyhton frame work
 st.title ("AI RESUME MAKER & JOB APPLY AGENT")
 st.image("https://www.instagram.com/reel/CzD-QKXxqCs/" width=300)
@@ -23,11 +24,12 @@ st.image("https://www.instagram.com/reel/CzD-QKXxqCs/" width=300)
 GOOGLE= st.sidebar.text_input("GEMINI",type="password")
 GROQ= st.sidebar.text_input("GROQ",type="password")
 TAVILY =st.sidebar.text_input("TAVILY",type="password")
-if not (GOOGLE) and not (GROQ) and not (TAVILY):
+
+if not (GOOGLE API KEY) and not (GROQ API KEY) and not (TAVILY API KEY):
     st.sidebar.warning("pass api keys")
     st.stop()
 else:
-    st.success("API KEYS LOADED")
+    st.success("API KEYS LOADED SUCCESSFULLY")
     
 #====================================================
 model=ChatGoogleGenerativeAI(
@@ -87,7 +89,9 @@ if FILE is not None:
     try:
         image = Image.open(FILE)
 
-        st.sidebar.image(image, caption="Uploaded Image", use_container_width=True)
+        st.sidebar.image(image,
+                        caption="Uploaded Image",
+                        use_container_width=True)
 
         if image.mode in ("RGBA", "P"):
             image = image.convert("RGB")
@@ -95,9 +99,7 @@ if FILE is not None:
         base_name = os.path.splitext(FILE.name)[0]
         save_path = f"{base_name}.jpg"
 
-        # 3. Save the image to the current working directory
         image.save(save_path, "JPEG")
-
         st.sidebar.success(f"🎉 Image successfully saved as `{save_path}`!")
 
     except Exception as e:
@@ -110,6 +112,14 @@ IMPORTANT: wherever the profile photo goes in the resume, output exactly this ta
 <img src="PROFILE_IMAGE_PLACEHOLDER" style="width:100px;height:100px;border-radius:50%;">
 do not draw or generate any other image tag or placeholder circle yourself """
 final_prompt=prompt+resume()
+
+===============UPLOAD IMAGE=============
+
+FILE =st.sidebar.file_uploader(
+    "Choose an image file"
+    type+["jpg","jpeg","png","webp"]
+)
+
 USER_INFO=st.text_area("ENTER YOUR INFORMATION")
 user_details=f"""user details:given beow :resume info {USER_INFO} DEFAULT IF NOT GIVEN : PYTHON DEVELOPER RESUME """
 query = final_prompt+user_details
