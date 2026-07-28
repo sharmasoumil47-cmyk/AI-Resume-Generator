@@ -19,7 +19,7 @@ from langchain_community.document_loaders import PyMuPDFLoader
 from PIL import Image
 #steream lit is web based pyhton frame work
 st.title ("AI RESUME MAKER & JOB APPLY AGENT")
-st.image("https://www.instagram.com/reel/CzD-QKXxqCs/" width=300)
+st.image("https://www.freecvmaker.in/images/resume_s.webp" width=300)
 # api keys
 GOOGLE= st.sidebar.text_input("GEMINI",type="password")
 GROQ= st.sidebar.text_input("GROQ",type="password")
